@@ -1,0 +1,34 @@
+name: CI/CD for NorrisQuote Package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Setup PHP environment
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer, phpunit
+
+      # Step 3: Install Composer dependencies
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      # Step 4: Run PHPUnit tests
+      - name: Run tests with PHPUnit
+        run: vendor/bin/phpunit --coverage-text

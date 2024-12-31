@@ -1,0 +1,33 @@
+{
+    "name": "raducu/norrisquote",
+    "description": "Laravel package for Chuck Norris quotes",
+    "type": "package",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Raducu\\NorrisQuote\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Raducu\\NorrisQuote\\NorrisQuoteServiceProvider"
+            ]
+        }
+    },
+    "authors": [
+        {
+            "name": "Raducu Cosmin",
+            "email": "raducu89rmc@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.0",
+        "laravel/framework": "^11.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0.1",
+        "guzzlehttp/guzzle": "7.9.x-dev"
+    }
+}
