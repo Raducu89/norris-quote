@@ -18,32 +18,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Setup PHP environment with PHPUnit 8.5 and enable Xdebug
+      # Step 2: Setup PHP environment with PHPUnit 11.5 and enable Xdebug
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          extensions: xdebug
+          tools: composer, phpunit@11.5, xdebug
           coverage: xdebug
-          tools: composer
 
       # Step 3: Install Composer dependencies
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
-      # Step 4: Ensure PHPUnit 8.5 is installed via Composer
-      - name: Install PHPUnit 8.5
-        run: composer require --dev phpunit/phpunit ^8.5 --with-all-dependencies
-
-      # Step 5: Run PHPUnit tests and generate coverage report
+      # Step 4: Run PHPUnit tests and generate coverage report
       - name: Run tests with PHPUnit
         run: |
           vendor/bin/phpunit --coverage-clover=coverage.xml --configuration phpunit.xml
 
-      # Step 6: Check code coverage and add annotation
+      # Step 5: Check code coverage and add annotation
       - name: Check code coverage
         run: |
-          COVERAGE=$(grep -oPm1 "(?<=<metrics statements=)[^ >]*" coverage.xml | awk '{print int($1)}')
+          COVERAGE=$(grep -oPm1 "(?<=<metrics statements=)[^>]*" coverage.xml | awk '{print int($1)}')
           if [ "$COVERAGE" -lt 80 ]; then
             echo "::warning ::Code coverage is below 80%: ${COVERAGE}%"
           else
