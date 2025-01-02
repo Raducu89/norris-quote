@@ -18,12 +18,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Setup PHP environment with PHPUnit 11.5 and enable Xdebug
+      # Step 2: Setup PHP environment with Composer and Xdebug enabled for coverage
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@v3
         with:
           php-version: '8.3'
-          tools: composer, phpunit@11.5, xdebug
+          tools: composer
           coverage: xdebug
 
       # Step 3: Install Composer dependencies
