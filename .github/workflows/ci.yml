@@ -29,6 +29,17 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
-      # Step 4: Run PHPUnit tests
+      # Step 4: Run PHPUnit tests and generate coverage report
       - name: Run tests with PHPUnit
-        run: vendor/bin/phpunit --coverage-text
+        run: |
+          vendor/bin/phpunit --coverage-clover=coverage.xml
+
+      # Step 5: Check code coverage and add annotation
+      - name: Check code coverage
+        run: |
+          COVERAGE=$(grep -oPm1 "(?<=<metrics statements=)[^>]*" coverage.xml | awk '{print int($1)}')
+          if [ "$COVERAGE" -lt 80 ]; then
+            echo "::warning ::Code coverage is below 80%: ${COVERAGE}%"
+          else
+            echo "Code coverage is satisfactory: ${COVERAGE}%"
+          fi
