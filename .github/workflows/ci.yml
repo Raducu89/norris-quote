@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Setup PHP environment with Composer and Xdebug enabled for coverage
+      # Step 2: Setup PHP environment with Composer and Xdebug enabled
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -26,16 +26,20 @@ jobs:
           tools: composer
           coverage: xdebug
 
-      # Step 3: Install Composer dependencies
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+      # Step 3: Set Xdebug environment variable to enable coverage mode
+      - name: Set XDEBUG_MODE
+        run: echo "XDEBUG_MODE=coverage" >> $GITHUB_ENV
 
-      # Step 4: Run PHPUnit tests and generate coverage report
+      # Step 4: Install Composer dependencies
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      # Step 5: Run PHPUnit tests and generate coverage report
       - name: Run tests with PHPUnit
         run: |
           vendor/bin/phpunit --coverage-clover=coverage.xml --configuration phpunit.xml
 
-      # Step 5: Check code coverage and add annotation
+      # Step 6: Check code coverage and add annotation
       - name: Check code coverage
         run: |
           COVERAGE=$(grep -oPm1 "(?<=<metrics statements=)[^>]*" coverage.xml | awk '{print int($1)}')

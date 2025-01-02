@@ -2,8 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
          bootstrap="vendor/autoload.php"
-         colors="true"
-         verbose="true">
+         colors="true">
 
     <testsuites>
         <testsuite name="Package Test Suite">
@@ -11,7 +10,7 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="false">
+    <coverage>
         <include>
             <directory suffix=".php">./src</directory>
         </include>
@@ -22,8 +21,6 @@
             <html outputDirectory="coverage-html"/>
             <clover outputFile="coverage.xml"/>
         </report>
-        <min>
-            <percentage>80</percentage>
-        </min>
     </coverage>
+
 </phpunit>
