@@ -4,8 +4,9 @@ namespace Raducu\NorrisQuote\Services;
 
 use Illuminate\Http\Client\Factory as HttpClient;
 use Psr\Log\LoggerInterface;
+use Raducu\NorrisQuote\Contracts\NorrisQuoteContract;
 
-final class NorrisQuoteService
+final class NorrisQuoteService implements NorrisQuoteContract
 {
     /**
      * The API URL to fetch the quotes from.
@@ -24,7 +25,7 @@ final class NorrisQuoteService
 
     public function __construct(LoggerInterface $logger, HttpClient $httpClient)
     {
-        $apiUrl = require __DIR__ . '/../../config/config.php';
+        $apiUrl = config('norrisquote');
 
         $this->apiUrl = $apiUrl['api_url'];
         $this->logger = $logger;
