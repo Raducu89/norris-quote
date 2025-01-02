@@ -2,7 +2,7 @@
 
 namespace Raducu\NorrisQuote\Services;
 
-use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Factory as HttpClient;
 use Psr\Log\LoggerInterface;
 
 final class NorrisQuoteService
@@ -13,6 +13,7 @@ final class NorrisQuoteService
      * @var string
      */
     protected string $apiUrl;
+    protected HttpClient $httpClient;
 
     /**
      * The logger instance.
@@ -21,11 +22,13 @@ final class NorrisQuoteService
      */
     protected LoggerInterface $logger;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, HttpClient $httpClient)
     {
         $apiUrl = require __DIR__ . '/../../config/config.php';
+
         $this->apiUrl = $apiUrl['api_url'];
         $this->logger = $logger;
+        $this->httpClient = $httpClient;
     }
 
     /**
@@ -53,7 +56,7 @@ final class NorrisQuoteService
      */
     protected function fetchQuoteFromApi(): array
     {
-        $response = Http::get($this->apiUrl);
+        $response = $this->httpClient->get($this->apiUrl);
 
         if ($response->failed()) {
             throw new \Exception($response['message'] ?? 'Failed to fetch data from the API', $response->status());
